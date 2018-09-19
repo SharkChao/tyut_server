@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winning.dao.UserMapper">
+
+	<select id="login" resultType="com.winning.bean.Account">
+		SELECT
+		a.id as user_id,
+		a.account,
+		a.password AS password
+		FROM
+		account AS a
+		where a.account=#{account} and a.password=#{pwd}
+	</select>
+</mapper>

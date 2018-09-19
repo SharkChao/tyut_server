@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winning.dao.MessageMapper">
+
+	<select id="getMessageType" resultType="com.winning.bean.MessageType">
+		SELECT
+		id,
+		msg_type
+		FROM
+		msg_type
+	</select>
+	<insert id="saveMessage" parameterType="com.winning.bean.Message">
+		INSERT  INTO msg(
+			msg_title,
+			msg_type,
+			msg_date,
+			msg_imgs,
+			msg_content,
+			publish_person
+		)VALUES (
+			#{message.msg_title},
+			#{message.msg_type},
+			#{message.msg_date},
+			#{message.msg_imgs},
+			#{message.msg_content},
+			#{message.publish_person}
+		)
+	</insert>
+	<select id="getMessages" resultType="com.winning.bean.Message">
+		SELECT *
+		FROM msg
+		ORDER BY cjsj DESC
+		Limit #{index},50
+
+	</select>
+</mapper>
