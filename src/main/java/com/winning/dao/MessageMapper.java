@@ -17,5 +17,5 @@ public interface MessageMapper {
     //用户登录
 	List<MessageType> getMessageType();
 	void saveMessage(@Param(value = "message")Message message);
-	List<Message> getMessages(@Param(value = "index")int index);
+	List<Message> getMessages(@Param(value = "index")int index,@Param(value = "msg_type_id")int msg_type_id);
 }

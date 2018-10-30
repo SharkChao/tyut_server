@@ -40,10 +40,9 @@ public class MessageRestController {
 	}
 
     @RequestMapping(value="/message/getMessage")
-    String getMessage(@RequestParam("index")int index){
-        List<Message> messages = messageService.getMessage(index);
+    String getMessage(@RequestParam("index")int index,@RequestParam("msg_type_id")int msg_type_id){
+        List<Message> messages = messageService.getMessage(index,msg_type_id);
         JSONArray jsonArray = JSONArray.fromObject(messages);
         return JsonUtil.returnSuccessJson(jsonArray.toString(),"");
     }
-
 }

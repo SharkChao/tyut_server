@@ -11,4 +11,81 @@
 		account AS a
 		where a.account=#{account} and a.password=#{pwd}
 	</select>
+	<insert id="loginAndroid">
+		<selectKey keyProperty="count" resultType="int" order="BEFORE">
+			select count(*) from user where phone = #{user.phone}
+		</selectKey>
+		<if test="count > 0">
+			update user
+			SET
+			country = #{user.country},
+			zodiac=	#{user.zodiac},
+			phone=#{user.phone},
+			city=#{user.city},
+			zipCode=#{user.zipCode},
+			signature=	#{user.signature},
+			gender=#{user.gender},
+			snsplat=#{user.snsplat},
+			province=#{user.province},
+			constellation=	#{user.constellation},
+			age=#{user.age},
+			email=#{user.email},
+			avatar=#{user.avatar},
+			nickname=	#{user.nickname},
+			birthday=#{user.birthday},
+			addr=#{user.address},
+			resume=	#{user.resume},
+			fans=#{user.fans},
+			followings=#{user.followings},
+			rFriends=#{user.rFriends},
+			friends = #{user.friends}
+		</if>
+		<if test="count == 0">
+			INSERT  INTO  user(
+				country,
+				zodiac,
+				phone,
+				city,
+				zipCode,
+				signature,
+				gender,
+				snsplat,
+				province,
+				constellation,
+				age,
+				email,
+				avatar,
+				nickname,
+				birthday,
+				addr,
+				resume,
+				fans,
+				followings,
+				rFriends,
+				friends
+			)VALUES(
+				#{user.country},
+				#{user.zodiac},
+				#{user.phone},
+				#{user.city},
+				#{user.zipCode},
+				#{user.signature},
+				#{user.gender},
+				#{user.snsplat},
+				#{user.province},
+				#{user.constellation},
+				#{user.age},
+				#{user.email},
+				#{user.avatar},
+				#{user.nickname},
+				#{user.birthday},
+				#{user.address},
+				#{user.resume},
+				#{user.fans},
+				#{user.followings},
+				#{user.rFriends},
+				#{user.friends}
+			)
+		</if>
+	</insert>
 </mapper>

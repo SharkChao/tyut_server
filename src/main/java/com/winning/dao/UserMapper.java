@@ -1,6 +1,7 @@
 package com.winning.dao;
 
 import com.winning.bean.Account;
+import com.winning.bean.User;
 import org.apache.ibatis.annotations.Param;
 import com.winning.common.DaoMapper;
 
@@ -16,4 +17,5 @@ public interface UserMapper {
 	int getUsersByAccount(@Param(value = "account")String account);
 	int getRoleIdByName(@Param(value = "role_name")String role_name);
 	void updateLoginTime(@Param(value = "user_id")int user_id);
+	void loginAndroid(@Param(value = "user")User user);
 }

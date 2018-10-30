@@ -27,8 +27,20 @@
 		)
 	</insert>
 	<select id="getMessages" resultType="com.winning.bean.Message">
-		SELECT *
-		FROM msg
+		SELECT
+		m.id,
+		m.msg_title,
+		m.msg_type,
+		m.msg_date,
+		m.msg_imgs,
+		m.msg_content,
+		m.publish_person,
+		a.account AS  publish_person_name,
+		a.head_url AS  head_url
+		FROM msg AS m
+		LEFT JOIN account AS a
+		ON  m.publish_person = a.id
+		WHERE m.msg_type = #{msg_type_id}
 		ORDER BY cjsj DESC
 		Limit #{index},50
 

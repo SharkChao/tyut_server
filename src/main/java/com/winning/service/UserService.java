@@ -3,6 +3,7 @@ import javax.annotation.Resource;
 
 import com.winning.bean.Account;
 import com.winning.bean.Result;
+import com.winning.bean.User;
 import com.winning.util.UploadUtil;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,13 @@ public class UserService {
 		Account userInfo = userMapper.login(account, pwd);
     	return userInfo;
     }
+	public Result loginAndroid(User user){
+    	Result result = new Result();
+    	result.setCode(1);
+    	result.setMessage("登录成功!");
+		userMapper.loginAndroid(user);
+		return result;
+	}
 
     public Result register(MultipartFile file,Account userInfo){
     	Result result = new Result();

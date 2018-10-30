@@ -2,6 +2,7 @@ package com.winning.control;
 
 import com.winning.bean.Account;
 import com.winning.bean.Result;
+import com.winning.bean.User;
 import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
@@ -47,6 +48,20 @@ public class UserRestController {
 			log.error("register方法:"+e);
 			return JsonUtil.returnFailureJson(e.getMessage(), "101");
 		}
+	}
+	//1.用户登录
+	@PostMapping(value="/user/loginAndroid")
+	String loginAndroid(@RequestBody User user) {
+		log.info("loginAndroid方法调用:"+user);
+		try{
+			Result result = userService.loginAndroid(user);
+			JSONObject json=JSONObject.fromObject(result);
+			return JsonUtil.returnSuccessJson(json.toString(),"");
+		}catch(Exception e){
+			log.error("login方法:"+e);
+			return JsonUtil.returnFailureJson(e.getMessage(), "101");
+		}
+
 	}
 
 }

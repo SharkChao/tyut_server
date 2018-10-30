@@ -9,6 +9,7 @@ public class Message {
     private String msg_content;
     private int publish_person;
     private String publish_person_name;
+    private String head_url;
 
     public String getMsg_title() {
         return msg_title;
@@ -72,5 +73,13 @@ public class Message {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getHead_url() {
+        return head_url;
+    }
+
+    public void setHead_url(String head_url) {
+        this.head_url = head_url;
     }
 }
