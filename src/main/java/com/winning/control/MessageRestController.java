@@ -1,9 +1,6 @@
 package com.winning.control;
 
-import com.winning.bean.Account;
-import com.winning.bean.Message;
-import com.winning.bean.MessageType;
-import com.winning.bean.Result;
+import com.winning.bean.*;
 import com.winning.service.MessageService;
 import com.winning.service.UserService;
 import com.winning.util.JsonUtil;
@@ -45,4 +42,5 @@ public class MessageRestController {
         JSONArray jsonArray = JSONArray.fromObject(messages);
         return JsonUtil.returnSuccessJson(jsonArray.toString(),"");
     }
+
 }

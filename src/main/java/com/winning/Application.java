@@ -37,7 +37,8 @@ public class Application implements EmbeddedServletContainerCustomizer {
 	public SocketIOServer socketIOServer() {
 		Configuration config = new Configuration();
 //		config.setHostname("172.16.72.129");
-//		config.setHostname("172.16.30.125");
+		config.setHostname("172.16.30.125");
+//		config.setHostname("172.16.75.219");
 		config.setPort(9092);
 		final SocketIOServer server = new SocketIOServer(config);
 		return server;

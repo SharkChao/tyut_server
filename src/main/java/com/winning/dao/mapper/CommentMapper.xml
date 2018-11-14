@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winning.dao.CommentMapper">
+
+	<insert id="createComment" parameterType="com.winning.bean.Comment"  useGeneratedKeys="true" keyProperty="comment.id">
+		INSERT INTO  comments(
+			comment_content,
+			comment_person,
+			comment_date
+		)VALUES (
+			#{comment.content},
+			#{comment.user_id},
+			#{comment.date}
+		)
+
+	</insert>
+	<insert id="createFloor" parameterType="com.winning.bean.Floor">
+		INSERT into floors(
+			msg_id,
+			comment_ids
+		)VALUES (
+			#{floor.message_id},
+			#{floor.comment_ids}
+		)
+	</insert>
+	<select id="getFloor" parameterType="String" resultType="com.winning.bean.Floor">
+		SELECT
+		f.msg_id AS message_id,
+		f.comment_ids
+		FROM  floor AS f
+		WHERE f.msg_id = #{message_id}
+	</select>
+	<update id="updateFloor" parameterType="com.winning.bean.Floor">
+		UPDATE floor
+		<set>
+			comment_ids = #{floor.comment_ids}
+		</set>
+		WHERE msg_id = #{floor.message_id}
+	</update>
+</mapper>

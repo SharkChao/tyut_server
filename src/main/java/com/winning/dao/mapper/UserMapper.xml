@@ -13,7 +13,7 @@
 	</select>
 	<insert id="loginAndroid">
 		<selectKey keyProperty="count" resultType="int" order="BEFORE">
-			select count(*) from user where phone = #{user.phone}
+			select count(*) from user where  bmob_user_id = #{user.id}
 		</selectKey>
 		<if test="count > 0">
 			update user
@@ -38,7 +38,8 @@
 			fans=#{user.fans},
 			followings=#{user.followings},
 			rFriends=#{user.rFriends},
-			friends = #{user.friends}
+			friends = #{user.friends},
+			bmob_user_id = #{user.id}
 		</if>
 		<if test="count == 0">
 			INSERT  INTO  user(
@@ -62,7 +63,8 @@
 				fans,
 				followings,
 				rFriends,
-				friends
+				friends,
+			bmob_user_id
 			)VALUES(
 				#{user.country},
 				#{user.zodiac},
@@ -84,7 +86,8 @@
 				#{user.fans},
 				#{user.followings},
 				#{user.rFriends},
-				#{user.friends}
+				#{user.friends},
+			 #{user.id}
 			)
 		</if>
 	</insert>
