@@ -1,10 +1,13 @@
 package com.winning.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Floor {
     private String message_id;
     private String comment_ids;
+    private String id;
+    private List<Comment>comments = new ArrayList<>();
 
     public String getComment_ids() {
         return comment_ids;
@@ -20,5 +23,21 @@ public class Floor {
 
     public void setMessage_id(String message_id) {
         this.message_id = message_id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

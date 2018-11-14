@@ -6,15 +6,19 @@
 		INSERT INTO  comments(
 			comment_content,
 			comment_person,
-			comment_date
+			comment_date,
+			msg_id,
+			floor_id
 		)VALUES (
 			#{comment.content},
 			#{comment.user_id},
-			#{comment.date}
+			#{comment.date},
+			#{comment.message_id},
+			#{comment.floor_id}
 		)
 
 	</insert>
-	<insert id="createFloor" parameterType="com.winning.bean.Floor">
+	<insert id="createFloor" parameterType="com.winning.bean.Floor"  useGeneratedKeys="true" keyProperty="floor.id">
 		INSERT into floors(
 			msg_id,
 			comment_ids
@@ -26,9 +30,11 @@
 	<select id="getFloor" parameterType="String" resultType="com.winning.bean.Floor">
 		SELECT
 		f.msg_id AS message_id,
-		f.comment_ids
+		f.comment_ids,
+		f.id
 		FROM  floor AS f
 		WHERE f.msg_id = #{message_id}
+			AND id = #{floor_id}
 	</select>
 	<update id="updateFloor" parameterType="com.winning.bean.Floor">
 		UPDATE floor
@@ -36,5 +42,62 @@
 			comment_ids = #{floor.comment_ids}
 		</set>
 		WHERE msg_id = #{floor.message_id}
+		AND id = #{floor.id}
 	</update>
+	<select id="getAllFloor" parameterType="String" resultType="com.winning.bean.Floor">
+		SELECT
+		f.msg_id AS message_id,
+		f.comment_ids,
+		f.id
+		FROM floors AS f
+		WHERE f.msg_id = #{message_id}
+		ORDER BY update_time DESC
+	</select>
+	<select id="getCommentById" parameterType="String" resultType="com.winning.bean.Comment">
+		SELECT
+		c.id,
+		c.msg_id AS message_id,
+		c.comment_date AS date
+		c.comment_content AS content,
+		c.praise_num,
+		c.comment_person AS user_id,
+		u.avatar AS url,
+		u.nickname AS nick_name
+		from comments AS c
+		LEFT JOIN user AS u
+		ON c.comment_person = u.bmob_user_id
+		WHERE c.id = #{comment_id}
+	</select>
+	<update id="updateCommentFloor">
+		UPDATE comments
+		<set>
+			floor_id = #{floor_id}
+		</set>
+		WHERE id = #{comment_id}
+	</update>
+	<select id="getHotComments" resultType="com.winning.bean.Comment">
+		SELECT
+		floor_id,
+		praise_num
+		FROM comments
+		WHERE msg_id = #{message_id}
+		AND praise_num > 0
+		GROUP by floor_id
+		ORDER BY praise_num DESC
+		limit 5
+	</select>
+	<select id="getHotFloor"  resultType="com.winning.bean.Floor">
+		SELECT
+		f.msg_id AS message_id,
+		f.comment_ids,
+		f.id
+		FROM floors AS f
+		WHERE f.msg_id = #{message_id}
+		AND f.id = #{floor_id}
+	</select>
+	<select id="getCommentCount" resultType="int">
+		SELECT  count(*)
+		FROM comments
+		WHERE msg_id = #{message_id}
+	</select>
 </mapper>

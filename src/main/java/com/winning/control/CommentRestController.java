@@ -1,9 +1,6 @@
 package com.winning.control;
 
-import com.winning.bean.Comment;
-import com.winning.bean.Message;
-import com.winning.bean.MessageType;
-import com.winning.bean.Result;
+import com.winning.bean.*;
 import com.winning.service.CommentService;
 import com.winning.service.MessageService;
 import com.winning.util.JsonUtil;
@@ -30,8 +27,22 @@ public class CommentRestController {
 		JSONObject jsonObject = JSONObject.fromObject(result);
 		return JsonUtil.returnSuccessJson(jsonObject.toString(),"");
 	}
+	@GetMapping(value = "comment/getCommentCount")
+	String getCommentCount(@RequestParam(value = "message_id")String message_id){
+		Result commentCount = commentService.getCommentCount(message_id);
+		JSONObject jsonObject = JSONObject.fromObject(commentCount);
+		return JsonUtil.returnSuccessJson(jsonObject.toString(),"");
+	}
 	@RequestMapping(value = "comment/getAllComment")
 	String getAllComment(@RequestParam(value = "message_id")String message_id){
-		return "";
+		List<Floor> allFloor = commentService.getAllFloor(message_id);
+		JSONArray jsonArray = JSONArray.fromObject(allFloor);
+		return JsonUtil.returnSuccessJson(jsonArray.toString(),"");
+	}
+	@RequestMapping(value = "comment/getHotComment")
+	String getHotComment(@RequestParam(value = "message_id")String message_id){
+		List<Floor> allFloor = commentService.getHotFloor(message_id);
+		JSONArray jsonArray = JSONArray.fromObject(allFloor);
+		return JsonUtil.returnSuccessJson(jsonArray.toString(),"");
 	}
 }
