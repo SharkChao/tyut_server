@@ -16,8 +16,14 @@
 			#{comment.message_id},
 			#{comment.floor_id}
 		)
-
 	</insert>
+	<update id="updateComment" parameterType="int">
+		UPDATE comments
+		<set>
+			praise_num = praise_num+1
+		</set>
+		WHERE id = #{comment_id}
+	</update>
 	<insert id="createFloor" parameterType="com.winning.bean.Floor"  useGeneratedKeys="true" keyProperty="floor.id">
 		INSERT into floors(
 			msg_id,
@@ -32,12 +38,12 @@
 		f.msg_id AS message_id,
 		f.comment_ids,
 		f.id
-		FROM  floor AS f
+		FROM  floors AS f
 		WHERE f.msg_id = #{message_id}
 			AND id = #{floor_id}
 	</select>
 	<update id="updateFloor" parameterType="com.winning.bean.Floor">
-		UPDATE floor
+		UPDATE floors
 		<set>
 			comment_ids = #{floor.comment_ids}
 		</set>
@@ -55,17 +61,22 @@
 	</select>
 	<select id="getCommentById" parameterType="String" resultType="com.winning.bean.Comment">
 		SELECT
+		DISTINCT
 		c.id,
 		c.msg_id AS message_id,
-		c.comment_date AS date
+		c.comment_date AS date,
 		c.comment_content AS content,
 		c.praise_num,
 		c.comment_person AS user_id,
+		c.floor_id,
 		u.avatar AS url,
-		u.nickname AS nick_name
+		u.nickname AS nick_name,
+		cp.user_id AS praise_me_id
 		from comments AS c
 		LEFT JOIN user AS u
 		ON c.comment_person = u.bmob_user_id
+		LEFT JOIN comment_praise AS cp
+		ON c.id = cp.comment_id AND cp.user_id = #{user_id}
 		WHERE c.id = #{comment_id}
 	</select>
 	<update id="updateCommentFloor">
@@ -99,5 +110,19 @@
 		SELECT  count(*)
 		FROM comments
 		WHERE msg_id = #{message_id}
+	</select>
+	<insert id="createPraise" parameterType="com.winning.bean.CommentPraise" useGeneratedKeys="true" keyProperty="comment_praise.id">
+		INSERT  INTO  comment_praise(
+			user_id,
+			message_id,
+			comment_id
+		)VALUES (
+			#{comment_praise.user_id},
+			#{comment_praise.message_id},
+			#{comment_praise.comment_id}
+		)
+	</insert>
+	<select id="getPraiseCount" parameterType="com.winning.bean.CommentPraise" resultType="int">
+			select count(*) from comment_praise where  user_id = #{comment_praise.user_id} AND comment_id = #{comment_praise.comment_id} AND message_id = #{comment_praise.message_id}
 	</select>
 </mapper>

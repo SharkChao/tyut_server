@@ -9,6 +9,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,15 +35,21 @@ public class CommentRestController {
 		return JsonUtil.returnSuccessJson(jsonObject.toString(),"");
 	}
 	@RequestMapping(value = "comment/getAllComment")
-	String getAllComment(@RequestParam(value = "message_id")String message_id){
-		List<Floor> allFloor = commentService.getAllFloor(message_id);
+	String getAllComment(@RequestParam(value = "message_id")String message_id,@RequestParam(value = "user_id")String user_id){
+		List<Floor> allFloor = commentService.getAllFloor(message_id,user_id);
 		JSONArray jsonArray = JSONArray.fromObject(allFloor);
 		return JsonUtil.returnSuccessJson(jsonArray.toString(),"");
 	}
 	@RequestMapping(value = "comment/getHotComment")
-	String getHotComment(@RequestParam(value = "message_id")String message_id){
-		List<Floor> allFloor = commentService.getHotFloor(message_id);
+	String getHotComment(@RequestParam(value = "message_id")String message_id,@RequestParam(value = "user_id")String user_id){
+		List<Floor> allFloor = commentService.getHotFloor(message_id,user_id);
 		JSONArray jsonArray = JSONArray.fromObject(allFloor);
 		return JsonUtil.returnSuccessJson(jsonArray.toString(),"");
+	}
+	@PostMapping(value = "comment/createPraise")
+	String createPraise(@RequestBody CommentPraise commentPraise){
+    	Result result = commentService.createPraise(commentPraise);
+		JSONObject jsonObject = JSONObject.fromObject(result);
+		return JsonUtil.returnSuccessJson(jsonObject.toString(),"");
 	}
 }

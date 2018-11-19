@@ -7,7 +7,7 @@ public class Comment {
     private String content;
     private String floor_id;
     private int praise_num;//点赞人数
-
+    private String praise_me_id;
     private String user_id;
     private String url;
     private String nick_name;
@@ -100,6 +100,14 @@ public class Comment {
 
     public void setFloor_id(String floor_id) {
         this.floor_id = floor_id;
+    }
+
+    public String getPraise_me_id() {
+        return praise_me_id;
+    }
+
+    public void setPraise_me_id(String praise_me_id) {
+        this.praise_me_id = praise_me_id;
     }
 
     @Override

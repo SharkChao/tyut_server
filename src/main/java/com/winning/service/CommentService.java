@@ -60,7 +60,7 @@ public class CommentService {
 				floor.setComment_ids(s);
 				//更新楼层
 				mapper.updateFloor(floor);
-
+                result.setCode(1);
 			}
 		}catch (Exception e){
 	 		result.setCode(0);
@@ -68,7 +68,7 @@ public class CommentService {
 	 	return result;
 	 }
 
-	 public List<Floor> getAllFloor(String message_id){
+	 public List<Floor> getAllFloor(String message_id,String user_id){
 		List<Floor>list = new ArrayList<>();
 	 	try {
 	 		//根据新闻id获取楼层
@@ -77,19 +77,20 @@ public class CommentService {
 				String comment_ids = floor.getComment_ids();
 				String[] split = comment_ids.substring(1, comment_ids.length() - 1).split(",");
 				for (String id:split){
-					Comment comment = mapper.getCommentById(id);
+					Comment comment = mapper.getCommentById(id,user_id);
 					comment.setContent(URLDecoder.decode(comment.getContent(), "utf-8"));
+					//需要判断这条评论是否点过赞
 					floor.getComments().add(comment);
 				}
 			}
 			list.addAll(allFloor);
 		}catch (Exception e){
-
+            System.out.println(e.toString());
 		}
 		return list;
 	 }
 
-	public List<Floor> getHotFloor(String message_id){
+	public List<Floor> getHotFloor(String message_id,String user_id){
 		List<Floor>list = new ArrayList<>();
 		try {
 			//根据新闻id获取楼层
@@ -99,7 +100,8 @@ public class CommentService {
 					String comment_ids = floor.getComment_ids();
 					String[] split = comment_ids.substring(1, comment_ids.length() - 1).split(",");
 					for (String id:split){
-						Comment comment = mapper.getCommentById(id);
+						Comment comment = mapper.getCommentById(id,user_id);
+
 						comment.setContent(URLDecoder.decode(comment.getContent(), "utf-8"));
 						floor.getComments().add(comment);
 					}
@@ -122,4 +124,24 @@ public class CommentService {
 		return  result;
 	}
 
+	public Result createPraise(CommentPraise commentPraise){
+	     Result result = new Result();
+	     try {
+             int praiseCount = mapper.getPraiseCount(commentPraise);
+             if (praiseCount == 0){
+                 mapper.createPraise(commentPraise);
+                 if (!TextUtils.isEmpty(commentPraise.getId())){
+                     mapper.updateComment(commentPraise.getComment_id());
+                 }
+                 result.setCode(1);
+             }else {
+                 result.setCode(0);
+                 result.setMessage("不可重复点赞!");
+             }
+         }catch (Exception e){
+	         result.setCode(0);
+         }
+	     return result;
+
+    }
 }
